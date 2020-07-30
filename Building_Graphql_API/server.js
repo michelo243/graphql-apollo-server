@@ -3,7 +3,7 @@ const { ApolloServer, gql } = require ('apollo-server-express');
 const cors = require('cors');
 const dotEnv = require('dotenv');
 //adding to the constants folders
-const { tasks } = require('./constants');
+const { tasks, users } = require('./constants');
 
 // set env variables
 
@@ -44,7 +44,11 @@ const resolvers ={
     Query : {
         greetings: () => "Jambo",
         tasks:() => tasks // refere to the tasks constante from folder constants
+    },
+    Task:{
+        user:({userId}) => users.find(user => user.id === userId) //Field Level Resolver
     }
+
 };
 
 //Apollo server
