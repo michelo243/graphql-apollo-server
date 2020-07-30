@@ -2,6 +2,8 @@ const express = require ('express');
 const { ApolloServer, gql } = require ('apollo-server-express');
 const cors = require('cors');
 const dotEnv = require('dotenv');
+//adding to the constants folders
+const { tasks, users } = require('./constants');
 
 // set env variables
 
@@ -19,13 +21,34 @@ app.use(express.json());
 const typeDefs = gql`
     type Query {
         greetings : String!
+        tasks:[Task!] 
     }
+
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        tasks: [Task!]
+    }
+
+    type Task {
+        id: ID!
+        name: String!
+        completed: Boolean!
+        user: User!
+    }
+
 `;
 
 const resolvers ={
     Query : {
-        greetings: () => "Jambo"
+        greetings: () => "Jambo",
+        tasks:() => tasks // refere to the tasks constante from folder constants
+    },
+    Task:{
+        user:({userId}) => users.find(user => user.id === userId) //Field Level Resolver
     }
+
 };
 
 //Apollo server
