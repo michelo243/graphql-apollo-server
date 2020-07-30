@@ -18,11 +18,15 @@ app.use(express.json());
 
 const typeDefs = gql`
     type Query {
-        greetings : String
+        greetings : String!
     }
 `;
 
-const resolvers ={};
+const resolvers ={
+    Query : {
+        greetings: () => "Jambo"
+    }
+};
 
 //Apollo server
 //inside typeDefs we have the schema, in the resoolvers you will define how you will get the data foor this particular schema
