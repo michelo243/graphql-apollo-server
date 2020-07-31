@@ -3,7 +3,8 @@ const { ApolloServer, gql } = require ('apollo-server-express');
 const cors = require('cors');
 const dotEnv = require('dotenv');
 //adding to the constants folders
-const { tasks, users } = require('./constants');
+const resolvers = require('./resolvers');
+
 
 // set env variables
 
@@ -29,6 +30,17 @@ const typeDefs = gql`
         user(id :ID!) : User
     }
 
+    # create mutatioin
+    input createTaskInput {
+        name: String!
+        completed: Boolean!
+        userId: ID!
+    }
+
+    type Mutation {
+        createTask(input: createTaskInput!): Task
+    }
+
     type User {
         id: ID!
         name: String!
@@ -44,41 +56,15 @@ const typeDefs = gql`
     }
 `;
 
-const resolvers ={
-    Query : {
-        greetings: () => "Jambo",
-        tasks:() => {
-            return tasks; // refere to the tasks constante from folder constants
-        },
-        // We will simplify the line below
-        // task:(_,{id}) => tasks.find(task => task.id === id)
-        task:(_,{id}) => {
-            console.log(typeof id);
-            return tasks.find(task => task.id === id)
-        },
-        // Users list and get user by Id
-        users: () => users,
-        user:(_,{id}) =>{
-            return users.find(user => user.id  === id)
-        }
-    },
-    Task:{
-        user:({userId}) => {
-            return users.find(user => user.id === userId) //Field Level Resolver
-        }
-    },
-    User:{
-        tasks:({ id }) => tasks.filter(task => task.userId === id)
-            // filter instead of find and will return a new array
-    }
-
-};
+/* const resolvers ={
+    
+}; */
 
 //Apollo server
 //inside typeDefs we have the schema, in the resoolvers you will define how you will get the data foor this particular schema
 const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers // refere to the folder resolvers
 });
 
 apolloServer.applyMiddleware({ app, path: '/graphql'});
