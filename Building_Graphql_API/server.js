@@ -4,10 +4,10 @@ const cors = require('cors');
 const dotEnv = require('dotenv');
 //adding to the constants folders
 const resolvers = require('./resolvers');
+const typeDefs = require('./typeDefs');
 
 
 // set env variables
-
 dotEnv.config();
 
 const app = express();
@@ -18,47 +18,6 @@ app.use(cors());
 
 //body parser
 app.use(express.json());
-
-const typeDefs = gql`
-    type Query {
-        greetings : String!
-        tasks:[Task!] 
-        # querying task by id
-        task(id: ID!) : Task
-        # query User List & Get User by ID
-        users: [User!]
-        user(id :ID!) : User
-    }
-
-    # create mutatioin
-    input createTaskInput {
-        name: String!
-        completed: Boolean!
-        userId: ID!
-    }
-
-    type Mutation {
-        createTask(input: createTaskInput!): Task
-    }
-
-    type User {
-        id: ID!
-        name: String!
-        email: String!
-        tasks: [Task!]
-    }
-
-    type Task {
-        id: ID!
-        name: String!
-        completed: Boolean!
-        user: User!
-    }
-`;
-
-/* const resolvers ={
-    
-}; */
 
 //Apollo server
 //inside typeDefs we have the schema, in the resoolvers you will define how you will get the data foor this particular schema
