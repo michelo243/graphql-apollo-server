@@ -24,6 +24,9 @@ const typeDefs = gql`
         tasks:[Task!] 
         # querying task by id
         task(id: ID!) : Task
+        # query User List & Get User by ID
+        users: [User!]
+        user(id :ID!) : User
     }
 
     type User {
@@ -47,10 +50,26 @@ const resolvers ={
         tasks:() => {
             return tasks; // refere to the tasks constante from folder constants
         },
-         task:(_,{id}) => tasks.find(task => task.id === id)
+        // We will simplify the line below
+        // task:(_,{id}) => tasks.find(task => task.id === id)
+        task:(_,{id}) => {
+            console.log(typeof id);
+            return tasks.find(task => task.id === id)
+        },
+        // Users list and get user by Id
+        users: () => users,
+        user:(_,{id}) =>{
+            return users.find(user => user.id  === id)
+        }
     },
     Task:{
-        user:({userId}) => users.find(user => user.id === userId) //Field Level Resolver
+        user:({userId}) => {
+            return users.find(user => user.id === userId) //Field Level Resolver
+        }
+    },
+    User:{
+        tasks:({ id }) => tasks.filter(task => task.userId === id)
+            // filter instead of find and will return a new array
     }
 
 };
