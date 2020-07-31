@@ -22,6 +22,8 @@ const typeDefs = gql`
     type Query {
         greetings : String!
         tasks:[Task!] 
+        # querying task by id
+        task(id: ID!) : Task
     }
 
     type User {
@@ -37,13 +39,15 @@ const typeDefs = gql`
         completed: Boolean!
         user: User!
     }
-
 `;
 
 const resolvers ={
     Query : {
         greetings: () => "Jambo",
-        tasks:() => tasks // refere to the tasks constante from folder constants
+        tasks:() => {
+            return tasks; // refere to the tasks constante from folder constants
+        },
+         task:(_,{id}) => tasks.find(task => task.id === id)
     },
     Task:{
         user:({userId}) => users.find(user => user.id === userId) //Field Level Resolver
