@@ -5,6 +5,8 @@ const dotEnv = require('dotenv');
 //adding to the constants folders
 const resolvers = require('./resolvers');
 const typeDefs = require('./typeDefs');
+//cdatabase connexion
+const { connection } = require('./database/util');
 
 
 // set env variables
@@ -15,9 +17,12 @@ const app = express();
 //activate the cors to avoid muulti domaine errors
 //cors
 app.use(cors());
-
 //body parser
 app.use(express.json());
+
+//db connectivity
+connection();
+
 
 //Apollo server
 //inside typeDefs we have the schema, in the resoolvers you will define how you will get the data foor this particular schema
