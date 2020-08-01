@@ -1,0 +1,61 @@
+# Write your query or mutation here
+
+# TASK API
+
+query GetAllTasks{
+  tasks {
+    id
+    name
+    completed
+    user{
+      id
+      email
+    }
+  }
+}
+
+query GetTaskByID {
+  task(id :"2"){
+    id
+    name
+    completed
+  }
+}
+
+
+# USER API 
+
+query getAllUsers {
+  users {
+    id
+    name
+    tasks{
+      name
+      completed
+    }
+  }
+}
+
+query getUserById {
+  user(id:"1"){
+    id
+    name
+    email
+    tasks{
+      name
+      completed
+    }
+  }
+}
+
+
+# Mutation
+
+mutation CreateTask {
+  createTask(input: { name: "Maya Isamuna", completed: false, userId: "2" }) {
+    id
+    name
+    completed
+  }
+}
+
