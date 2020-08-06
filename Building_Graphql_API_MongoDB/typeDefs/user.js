@@ -16,12 +16,18 @@ module.exports = gql`
         password: String!
     }
 
-    type User {
+    type User { 
         id: ID!
         name: String!
         email: String!
         password: String!
         tasks: [Task!]
+        # We will repllace those two line by the scalar Type we create
+        # createdAt: String!
+        # updatedAt: String!
+        createdAt: Date!
+        updatedAt: Date!
+
     }
     # Notion d'heritage --> ajoute le champs address dans la classe user
     extend type User {
